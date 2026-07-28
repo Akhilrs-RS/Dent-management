@@ -6,7 +6,7 @@ import PatientEHR from './components/PatientEHR';
 import TreatmentPlanner from './components/TreatmentPlanner';
 import RegisterPatientModal from './components/RegisterPatientModal';
 import WhatsAppSimulator from './components/WhatsAppSimulator';
-import LandingPage from './components/LandingPage';
+
 
 const API_BASE = 'http://localhost:5112/api';
 
@@ -15,7 +15,7 @@ export default function App() {
   const [appointments, setAppointments] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [activePatientId, setActivePatientId] = useState('P-101');
-  const [currentView, setCurrentView] = useState('landing');
+  const [currentView, setCurrentView] = useState('dashboard');
   const [themeMode, setThemeMode] = useState('dark');
   const [userRole, setUserRole] = useState('receptionist'); // receptionist vs doctor
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -343,10 +343,6 @@ export default function App() {
 
   const header = getHeaderDetails();
 
-  if (currentView === 'landing') {
-    return <LandingPage onNavigate={setCurrentView} />;
-  }
-
   return (
     <div className="app-container">
       
@@ -416,13 +412,6 @@ export default function App() {
             style={{ width: '100%', fontSize: '12px', padding: '8px 12px', marginBottom: '8px' }}
           >
             {themeMode === 'dark' ? '☀️ Switch to Light Mode' : '🌙 Switch to Dark Mode'}
-          </button>
-
-          <button 
-            className="sidebar-logout-btn"
-            onClick={() => setCurrentView('landing')}
-          >
-            <span>🚪 Return to Home</span>
           </button>
         </div>
       </aside>
