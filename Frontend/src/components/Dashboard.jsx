@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CLINIC_ANALYTICS } from '../data/mockData';
+import { IndianRupee, Calendar, Search, ChevronRight, User, Stethoscope, CheckCircle, Bell, FileText, UserPlus, FileImage, ShieldAlert } from 'lucide-react';
 
 export default function Dashboard({ 
   userRole, 
@@ -136,87 +137,100 @@ export default function Dashboard({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       
+      {/* Dynamic Top Header */}
+      <div>
+        <h1 style={{ fontSize: '24px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+          Good morning, {userRole === 'doctor' ? 'Dr. Carter' : 'Emily'}!
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
+          Here's what's happening at AuraDental today.
+        </p>
+      </div>
+
       {/* Stat Cards Row */}
       <div className="dashboard-grid">
         <div className="card stat-card">
-          <div className="stat-info">
+          <div className="stat-header">
             <h3>Today's Production</h3>
+          </div>
+          <div className="stat-body">
+            <div className="stat-icon">
+              <IndianRupee size={22} />
+            </div>
             <div className="stat-value">₹{dailyRevenue.toLocaleString()}</div>
-            <div className="stat-change positive">
-              <span>↑ 12%</span> vs last Friday
-            </div>
           </div>
-          <div className="stat-icon" style={{ backgroundColor: 'rgba(13, 148, 136, 0.1)', color: 'var(--primary-teal)' }}>
-            🏥
+          <div className="stat-change positive">
+            <span>↑ 12% vs last Friday</span>
           </div>
         </div>
 
         <div className="card stat-card">
-          <div className="stat-info">
+          <div className="stat-header">
             <h3>Monthly Billings</h3>
+          </div>
+          <div className="stat-body">
+            <div className="stat-icon">
+              <Calendar size={22} />
+            </div>
             <div className="stat-value">₹{monthlyRevenue.toLocaleString()}</div>
-            <div className="stat-change positive">
-              <span>↑ 8.4%</span> this month
-            </div>
           </div>
-          <div className="stat-icon" style={{ backgroundColor: 'rgba(2, 132, 199, 0.1)', color: 'var(--secondary-blue)' }}>
-            💳
+          <div className="stat-change positive">
+            <span>↑ 8.4% last month</span>
           </div>
         </div>
 
         <div className="card stat-card">
-          <div className="stat-info">
+          <div className="stat-header">
             <h3>Operatory Occupancy</h3>
-            <div className="stat-value">{occupancyRate}%</div>
-            <div className="stat-change negative">
-              <span>↓ 2%</span> vs target 87%
-            </div>
           </div>
-          <div className="stat-icon" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-decay)' }}>
-            🦷
+          <div className="stat-body">
+            <div className="stat-icon">
+              <span style={{ fontSize: '20px' }}>🦷</span>
+            </div>
+            <div className="stat-value">{occupancyRate}%</div>
+          </div>
+          <div className="stat-change negative">
+            <span>↓ 2% vs target 87%</span>
           </div>
         </div>
 
         <div className="card stat-card">
-          <div className="stat-info">
+          <div className="stat-header">
             <h3>Active Patients</h3>
-            <div className="stat-value">{activePatients.toLocaleString()}</div>
-            <div className="stat-change positive">
-              <span>↑ 24</span> new this month
-            </div>
           </div>
-          <div className="stat-icon" style={{ backgroundColor: 'rgba(139, 92, 246, 0.1)', color: 'var(--color-crown)' }}>
-            👥
+          <div className="stat-body">
+            <div className="stat-icon">
+              <User size={22} />
+            </div>
+            <div className="stat-value">{activePatients.toLocaleString()}</div>
+          </div>
+          <div className="stat-change positive">
+            <span>↑ 24 new this month</span>
           </div>
         </div>
       </div>
 
       {/* Role-Based Intake & Waiting Room Queue Panels */}
       {userRole === 'receptionist' ? (
-        <div className="card" style={{ borderLeft: '4px solid var(--secondary-blue)' }}>
+        <div className="card" style={{ padding: '24px' }}>
           <div className="flex-between mb-sm" style={{ flexWrap: 'wrap', gap: '12px' }}>
             <div>
-              <h2>Patient Intake & Reception Lounge</h2>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                Search for an existing patient to check them in, or register first-time visits.
-              </p>
+              <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>Patient Intake & Reception Lounge</h2>
             </div>
-            <button className="btn btn-primary" onClick={onRegisterPatient}>
-              + Register First-Time Patient
-            </button>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', marginTop: '16px', alignItems: 'center' }}>
+          <div style={{ position: 'relative', marginTop: '16px' }}>
+            <Search size={18} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
             <input 
               type="text"
               className="form-control"
               placeholder="Search patients by name, phone or ID to check in..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ flexGrow: 1 }}
+              style={{ width: '100%', paddingLeft: '40px', paddingRight: '40px', borderRadius: '12px', border: '1px solid var(--border-color)', height: '44px' }}
             />
             {searchTerm && (
-              <button className="btn btn-secondary" onClick={() => setSearchTerm('')} style={{ padding: '8px 16px' }}>
+              <button className="btn btn-secondary" onClick={() => setSearchTerm('')} style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', padding: '4px 10px', fontSize: '11px', border: 'none' }}>
                 Clear
               </button>
             )}
@@ -238,50 +252,48 @@ export default function Dashboard({
                 
                 return (
                   <div key={p.id} className="flex-between" style={{ padding: '12px 16px', backgroundColor: 'var(--bg-app)', borderRadius: '8px', border: '1px solid var(--border-color)', flexWrap: 'wrap', gap: '12px' }}>
-                    <div>
-                      <strong style={{ color: 'var(--text-primary)', fontSize: '14px' }}>{p.name}</strong>
-                      <span style={{ fontSize: '11px', color: 'var(--text-muted)', marginLeft: '8px' }}>ID: {p.id}</span>
-                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                        Age/Gender: {p.age} yrs, {p.gender} | Contact: {p.phone}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div style={{ width: 40, height: 40, borderRadius: '50%', backgroundColor: 'var(--primary-teal-light)', color: 'var(--primary-teal)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '600', fontSize: '14px' }}>
+                        {p.name.split(' ').map(n => n[0]).join('').substring(0,2)}
                       </div>
-                      {p.medicalAlerts && p.medicalAlerts.length > 0 && (
-                        <div style={{ display: 'flex', gap: '4px', marginTop: '4px' }}>
-                          {p.medicalAlerts.map((al, aIdx) => (
-                            <span key={aIdx} className="badge badge-danger" style={{ fontSize: '9px', padding: '1px 4px' }}>{al}</span>
-                          ))}
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                          <strong style={{ color: 'var(--text-primary)', fontSize: '14px' }}>{p.name}</strong>
+                          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>#{p.id}</span>
                         </div>
-                      )}
+                        <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                          Age/Gender: {p.age} yrs, {p.gender} | Contact: {p.phone}
+                        </div>
+                      </div>
                     </div>
 
                     <div className="flex-row-center" style={{ gap: '10px' }}>
                       {todayApt ? (
                         <>
                           {todayApt.status === 'checked-in' && (
-                            <span className="badge badge-warning" style={{ fontSize: '11px' }}>Waiting Lounge</span>
+                            <span style={{ fontSize: '12px', color: 'var(--color-decay)', fontWeight: 500 }}>Waiting Lounge</span>
                           )}
                           {todayApt.status === 'in-chair' && (
-                            <span className="badge badge-danger" style={{ fontSize: '11px' }}>In Chair</span>
+                            <span style={{ fontSize: '12px', color: 'var(--color-fracture)', fontWeight: 500 }}>In Chair</span>
                           )}
                           {todayApt.status === 'completed' && (
-                            <span className="badge badge-success" style={{ fontSize: '11px' }}>Completed Visit</span>
+                            <span style={{ fontSize: '12px', color: 'var(--color-healthy)', fontWeight: 500 }}>Completed Visit</span>
                           )}
                           {(todayApt.status === 'scheduled' || todayApt.status === 'confirmed') && (
                             <button 
-                              className="btn btn-primary" 
-                              style={{ padding: '6px 12px', fontSize: '11px' }}
+                              style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 12px', fontSize: '12px', fontWeight: '500', color: 'var(--primary-teal)', backgroundColor: 'var(--primary-teal-light)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
                               onClick={() => onCheckInPatient(p.id, todayApt.room, todayApt.dentist, todayApt.type)}
                             >
-                              Check In for Visit
+                              Check In <ChevronRight size={14} />
                             </button>
                           )}
                         </>
                       ) : (
                         <button 
-                          className="btn btn-secondary" 
-                          style={{ padding: '6px 12px', fontSize: '11px', borderColor: 'var(--primary-teal)', color: 'var(--primary-teal)' }}
+                          style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 12px', fontSize: '12px', fontWeight: '500', color: 'var(--primary-teal)', backgroundColor: 'var(--primary-teal-light)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
                           onClick={() => onCheckInPatient(p.id)}
                         >
-                          Check In (Walk-In)
+                          Check In <ChevronRight size={14} />
                         </button>
                       )}
                     </div>
@@ -354,19 +366,13 @@ export default function Dashboard({
         
         {/* Practice Revenue Area Chart */}
         <div className="card">
-          <h2>Revenue Generation & Forecasting</h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
-            A comprehensive history of clinic revenue collections over the last 6 months.
-          </p>
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '16px' }}>Revenue Generation & Forecasting</h2>
           {renderRevenueChart()}
         </div>
 
         {/* Procedures Donut Chart */}
         <div className="card">
-          <h2>Procedure Metrics</h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
-            Distribution of treatment types billed.
-          </p>
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '16px' }}>Procedure Metrics</h2>
           {renderDonutChart()}
         </div>
       </div>
@@ -374,86 +380,113 @@ export default function Dashboard({
       {/* Operatorries & Recent Alerts Row */}
       <div className="dashboard-main-layout">
         
-        {/* Operatory Chairs Monitor */}
+        {/* Operatory Chairs Monitor -> Today's Schedule */}
         <div className="card">
-          <h2>Live Chair Monitor</h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-            Real-time status of the clinic treatment rooms.
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div className="flex-between mb-sm" style={{ marginBottom: '16px' }}>
+            <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>Today's Schedule</h2>
+            <button className="btn btn-secondary" style={{ padding: '6px 12px', fontSize: '12px', borderRadius: '8px' }} onClick={onViewScheduler}>
+              View Calendar
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             
-            <div className="flex-between" style={{ padding: '12px 16px', backgroundColor: 'rgba(139, 92, 246, 0.08)', borderRadius: '10px', borderLeft: '4px solid var(--color-crown)' }}>
+            <div className="flex-between" style={{ paddingBottom: '16px', borderBottom: '1px solid var(--border-color)' }}>
               <div>
-                <strong style={{ fontSize: '14px', color: 'var(--text-primary)' }}>Operatory A (General Dentistry)</strong>
-                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                  Patient: <strong>Marcus Sterling</strong> | Provider: Dr. Carter
+                <strong style={{ fontSize: '14px', color: 'var(--text-primary)' }}>Operatory A <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>| General Dentistry</span></strong>
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                  Marcus Sterling
                 </p>
               </div>
-              <span className="badge badge-danger">In-Chair (Filling #8)</span>
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '12px', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--color-fracture)', fontWeight: 500, display: 'inline-block', marginBottom: '4px' }}>In Progress</span>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>09:00 AM</div>
+              </div>
             </div>
 
-            <div className="flex-between" style={{ padding: '12px 16px', backgroundColor: 'rgba(16, 185, 129, 0.08)', borderRadius: '10px', borderLeft: '4px solid var(--color-healthy)' }}>
+            <div className="flex-between" style={{ paddingBottom: '16px', borderBottom: '1px solid var(--border-color)' }}>
               <div>
-                <strong style={{ fontSize: '14px', color: 'var(--text-primary)' }}>Operatory B (Surg / Implantology)</strong>
-                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                  Next patient: <strong>Samuel Henderson</strong> (11:15 AM)
+                <strong style={{ fontSize: '14px', color: 'var(--text-primary)' }}>Operatory B <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>| Surg / Implantology</span></strong>
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                  Samuel Henderson
                 </p>
               </div>
-              <span className="badge badge-success">Sterilization Complete</span>
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '12px', backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-decay)', fontWeight: 500, display: 'inline-block', marginBottom: '4px' }}>Upcoming</span>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>11:15 AM</div>
+              </div>
             </div>
 
-            <div className="flex-between" style={{ padding: '12px 16px', backgroundColor: 'rgba(2, 132, 199, 0.08)', borderRadius: '10px', borderLeft: '4px solid var(--secondary-blue)' }}>
+            <div className="flex-between" style={{ paddingBottom: '16px' }}>
               <div>
                 <strong style={{ fontSize: '14px', color: 'var(--text-primary)' }}>Hygiene Bay 1</strong>
-                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                  Patient: <strong>Chloe Park</strong> | Provider: Amy Miller
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                  Chloe Park
                 </p>
               </div>
-              <span className="badge badge-info">Cleaning Completed</span>
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '12px', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-healthy)', fontWeight: 500, display: 'inline-block', marginBottom: '4px' }}>Completed</span>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>08:30 AM</div>
+              </div>
             </div>
 
           </div>
-          <button className="btn btn-secondary mt-md" style={{ width: '100%' }} onClick={onViewScheduler}>
-            Open Scheduling Grid
+          <button style={{ width: '100%', textAlign: 'center', background: 'none', border: 'none', color: 'var(--primary-teal)', fontSize: '13px', fontWeight: 500, marginTop: '8px', cursor: 'pointer' }} onClick={onViewScheduler}>
+            View Full Schedule &rarr;
           </button>
         </div>
 
         {/* Live Alerts Feed */}
         <div className="card">
-          <h2>Clinic Notifications</h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-            Recent system activities and doctor call-outs.
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '250px', overflowY: 'auto' }}>
+          <div className="flex-between" style={{ marginBottom: '16px' }}>
+            <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>Clinic Notifications</h2>
+            <Bell size={18} style={{ color: 'var(--text-muted)' }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: '250px', overflowY: 'auto' }}>
             
-            <div style={{ padding: '10px', borderBottom: '1px solid var(--border-color)', fontSize: '12px' }}>
-              <div className="flex-between">
-                <span className="badge badge-success">Checked-In</span>
-                <span style={{ color: 'var(--text-muted)' }}>09:12 AM</span>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <div style={{ width: 36, height: 36, borderRadius: '50%', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-healthy)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <CheckCircle size={16} />
               </div>
-              <p style={{ marginTop: '4px', color: 'var(--text-primary)' }}>
-                Patient <strong>Eleanor Vance</strong> has checked in at reception.
-              </p>
+              <div>
+                <div className="flex-between">
+                  <strong style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Checked-In</strong>
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>09:12 AM</span>
+                </div>
+                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                  Patient <strong style={{ color: 'var(--text-primary)' }}>Eleanor Vance</strong> has checked in at reception.
+                </p>
+              </div>
             </div>
 
-            <div style={{ padding: '10px', borderBottom: '1px solid var(--border-color)', fontSize: '12px' }}>
-              <div className="flex-between">
-                <span className="badge badge-info">Image Uploaded</span>
-                <span style={{ color: 'var(--text-muted)' }}>09:05 AM</span>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <div style={{ width: 36, height: 36, borderRadius: '50%', backgroundColor: 'rgba(59, 130, 246, 0.1)', color: 'var(--secondary-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <FileImage size={16} />
               </div>
-              <p style={{ marginTop: '4px', color: 'var(--text-primary)' }}>
-                2 Intraoral Bitewing Radiographs uploaded for Eleanor Vance.
-              </p>
+              <div>
+                <div className="flex-between">
+                  <strong style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Image Uploaded</strong>
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>09:05 AM</span>
+                </div>
+                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                  2 Intraoral Bitewing Radiographs uploaded for Eleanor Vance.
+                </p>
+              </div>
             </div>
 
-            <div style={{ padding: '10px', borderBottom: '1px solid var(--border-color)', fontSize: '12px' }}>
-              <div className="flex-between">
-                <span className="badge badge-warning">Lab Case Alert</span>
-                <span style={{ color: 'var(--text-muted)' }}>Yesterday</span>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <div style={{ width: 36, height: 36, borderRadius: '50%', backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-decay)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <ShieldAlert size={16} />
               </div>
-              <p style={{ marginTop: '4px', color: 'var(--text-primary)' }}>
-                Elite Dental Lab: Crown case #82103 for Marcus Sterling is <strong>Shipped</strong>.
-              </p>
+              <div>
+                <div className="flex-between">
+                  <strong style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Lab Case Alert</strong>
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Yesterday</span>
+                </div>
+                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                  Elite Dental Lab: Crown case #82103 for Marcus Sterling is <strong style={{ color: 'var(--text-primary)' }}>Shipped</strong>.
+                </p>
+              </div>
             </div>
 
           </div>

@@ -6,7 +6,7 @@ import PatientEHR from './components/PatientEHR';
 import TreatmentPlanner from './components/TreatmentPlanner';
 import RegisterPatientModal from './components/RegisterPatientModal';
 import WhatsAppSimulator from './components/WhatsAppSimulator';
-
+import { LayoutDashboard, Calendar, Users, CalendarDays, Stethoscope, Stethoscope as Staff, CreditCard, Settings, Moon, Sun } from 'lucide-react';
 
 const API_BASE = 'http://localhost:5112/api';
 
@@ -317,12 +317,15 @@ export default function App() {
     }
   };
 
-  // Sidebar link details
+  // Sidebar link details matching Figma Mockup
   const NAV_ITEMS = [
-    { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-    { id: 'scheduler', label: 'Scheduler', icon: '📅' },
-    { id: 'patients', label: 'Patient EHR', icon: '👥' },
-    { id: 'planner', label: 'Ledger & Billing', icon: '💳' }
+    { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
+    { id: 'scheduler', label: 'Scheduler', icon: <Calendar size={18} /> },
+    { id: 'patients', label: 'Patient EHR', icon: <Users size={18} /> },
+    { id: 'appointments', label: 'Appointments', icon: <CalendarDays size={18} /> },
+    { id: 'treatments', label: 'Treatments', icon: <Stethoscope size={18} /> },
+    { id: 'doctors', label: 'Doctors & Staff', icon: <Staff size={18} /> },
+    { id: 'billing', label: 'Billing & Payments', icon: <CreditCard size={18} /> }
   ];
 
   // Dynamic Header Titles
@@ -349,7 +352,9 @@ export default function App() {
       {/* Sidebar Navigation */}
       <aside className="sidebar">
         <div className="logo-container">
-          <div className="logo-icon">🦷</div>
+          <div className="logo-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2c-4 0-5 3-5 5v5c0 4-2 6-4 6 2 2 4 4 9 4s7-2 9-4c-2 0-4-2-4-6V7c0-2-1-5-5-5z"/></svg>
+          </div>
           <div className="logo-text">AuraDental</div>
         </div>
 
@@ -367,71 +372,25 @@ export default function App() {
         </nav>
 
         <div className="sidebar-footer">
-          {/* User Role Switcher */}
-          <div style={{ padding: '8px', borderBottom: '1px solid var(--border-color)', marginBottom: '12px', width: '100%' }}>
-            <label style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 600, display: 'block', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              Active User Role
-            </label>
-            <div style={{ display: 'flex', gap: '4px', backgroundColor: 'var(--bg-app)', padding: '2px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-              <button 
-                type="button"
-                className={`btn ${userRole === 'receptionist' ? 'btn-primary' : 'btn-secondary'}`}
-                style={{ flex: 1, padding: '6px 4px', fontSize: '10px', border: 'none', borderRadius: '6px', minWidth: '0' }}
-                onClick={() => setUserRole('receptionist')}
-              >
-                Receptionist
-              </button>
-              <button 
-                type="button"
-                className={`btn ${userRole === 'doctor' ? 'btn-primary' : 'btn-secondary'}`}
-                style={{ flex: 1, padding: '6px 4px', fontSize: '10px', border: 'none', borderRadius: '6px', minWidth: '0' }}
-                onClick={() => setUserRole('doctor')}
-              >
-                Doctor
-              </button>
-            </div>
-          </div>
+          <button className="nav-item" style={{ marginBottom: '16px' }} onClick={() => setThemeMode(themeMode === 'dark' ? 'light' : 'dark')}>
+            <span className="nav-icon"><Settings size={18} /></span>
+            <span>Setting</span>
+          </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '0 8px', width: '100%', marginBottom: '12px' }}>
-            <div style={{ width: 34, height: 34, borderRadius: '50%', backgroundColor: userRole === 'doctor' ? 'var(--primary-teal)' : 'var(--secondary-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold', fontSize: '14px' }}>
-              {userRole === 'doctor' ? 'SC' : 'ES'}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+            <div style={{ width: 36, height: 36, borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: '500', fontSize: '14px' }}>
+              ES
             </div>
             <div>
-              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
-                {userRole === 'doctor' ? 'Dr. Sarah Carter' : 'Emily Stone'}
-              </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                {userRole === 'doctor' ? 'Lead Dentist' : 'Receptionist'}
-              </div>
+              <div style={{ fontSize: '14px', fontWeight: 500, color: '#fff' }}>Emily Stone</div>
+              <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>Receptionist</div>
             </div>
           </div>
-          
-          <button 
-            className="btn btn-secondary"
-            onClick={() => setThemeMode(themeMode === 'dark' ? 'light' : 'dark')}
-            style={{ width: '100%', fontSize: '12px', padding: '8px 12px', marginBottom: '8px' }}
-          >
-            {themeMode === 'dark' ? '☀️ Switch to Light Mode' : '🌙 Switch to Dark Mode'}
-          </button>
         </div>
       </aside>
 
       {/* Main Panel */}
       <main className="main-content">
-        
-        {/* Dynamic Top Header */}
-        <header className="top-header">
-          <div className="page-title">
-            <h1>{header.title}</h1>
-            <p>{header.desc}</p>
-          </div>
-          <div className="header-actions">
-            <div className="flex-row-center" style={{ backgroundColor: 'var(--primary-teal-light)', padding: '6px 12px', borderRadius: '20px', fontSize: '13px', border: '1px solid var(--border-color)' }}>
-              <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--color-healthy)', display: 'inline-block', marginRight: '6px' }} />
-              <strong>Clinic Database Connected ({userRole.toUpperCase()})</strong>
-            </div>
-          </div>
-        </header>
 
         {/* Tab Routing */}
         <div style={{ flexGrow: 1 }}>
