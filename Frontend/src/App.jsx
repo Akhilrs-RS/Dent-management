@@ -6,6 +6,10 @@ import PatientEHR from './components/PatientEHR';
 import TreatmentPlanner from './components/TreatmentPlanner';
 import RegisterPatientModal from './components/RegisterPatientModal';
 import WhatsAppSimulator from './components/WhatsAppSimulator';
+import AppointmentsPage from './components/AppointmentsPage';
+import TreatmentsPage from './components/TreatmentsPage';
+import DoctorsStaffPage from './components/DoctorsStaffPage';
+import BillingPaymentsPage from './components/BillingPaymentsPage';
 import { LayoutDashboard, Calendar, Users, CalendarDays, Stethoscope, Stethoscope as Staff, CreditCard, Settings, Moon, Sun } from 'lucide-react';
 
 const API_BASE = 'http://localhost:5112/api';
@@ -372,17 +376,21 @@ export default function App() {
         </nav>
 
         <div className="sidebar-footer">
-          <button className="nav-item" style={{ marginBottom: '16px' }} onClick={() => setThemeMode(themeMode === 'dark' ? 'light' : 'dark')}>
+          <button className="nav-item" style={{ marginBottom: '4px' }}>
             <span className="nav-icon"><Settings size={18} /></span>
-            <span>Setting</span>
+            <span>Settings</span>
+          </button>
+          <button className="nav-item" style={{ marginBottom: '16px' }} onClick={() => setThemeMode(themeMode === 'dark' ? 'light' : 'dark')}>
+            <span className="nav-icon">{themeMode === 'dark' ? <Sun size={18} /> : <Moon size={18} />}</span>
+            <span>{themeMode === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: '500', fontSize: '14px' }}>
+            <div style={{ width: 36, height: 36, borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--bg-card)', fontWeight: '500', fontSize: '14px' }}>
               ES
             </div>
             <div>
-              <div style={{ fontSize: '14px', fontWeight: 500, color: '#fff' }}>Emily Stone</div>
+              <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--bg-card)' }}>Emily Stone</div>
               <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>Receptionist</div>
             </div>
           </div>
@@ -433,6 +441,27 @@ export default function App() {
               onCheckInPatient={handleCheckInPatient}
               onUpdatePatient={handleUpdatePatient}
             />
+          )}
+
+          {currentView === 'appointments' && (
+            <AppointmentsPage 
+              appointments={appointments}
+              patients={patients}
+            />
+          )}
+
+          {currentView === 'treatments' && (
+            <TreatmentsPage 
+              patients={patients}
+            />
+          )}
+
+          {currentView === 'doctors' && (
+            <DoctorsStaffPage />
+          )}
+
+          {currentView === 'billing' && (
+            <BillingPaymentsPage />
           )}
 
           {currentView === 'planner' && (

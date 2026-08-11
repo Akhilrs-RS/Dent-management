@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Calendar, Users, Clock, CheckCircle, ChevronRight, UserPlus, Coffee, MonitorPlay } from 'lucide-react';
 
 const TIME_SLOTS = [
   { value: '08:00', label: '08:00 AM' },
@@ -76,18 +77,81 @@ export default function Scheduler({ appointments, patients, onAddAppointment, on
     setShowEditModal(false);
   };
 
+  // Calculate dynamic stats
+  const totalAppointments = appointments.length;
+  const checkedInCount = appointments.filter(a => a.status === 'checked-in' || a.status === 'in-chair').length;
+  const pendingCount = appointments.filter(a => a.status === 'scheduled' || a.status === 'confirmed').length;
+  const completedCount = appointments.filter(a => a.status === 'completed').length;
+
   return (
-    <div className="scheduler-container">
-      <div className="flex-between">
-        <div>
-          <h2>Operatory Scheduling Calendar</h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-            Viewing Schedule for <strong>Friday, June 19, 2026</strong>
-          </p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* Dynamic Top Header */}
+      <div>
+        <h1 style={{ fontSize: '24px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+          Good morning, Emily!
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
+          Here's what's happening at AuraDental today.
+        </p>
+      </div>
+
+      <div style={{ paddingBottom: '16px', borderBottom: '1px solid var(--border-color)' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>Operatory Scheduling Calendar</h2>
+      </div>
+
+      {/* 4 Stat Cards */}
+      <div className="dashboard-grid">
+        <div className="card stat-card" style={{ padding: '20px' }}>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-healthy)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Calendar size={24} />
+            </div>
+            <div>
+              <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Today's Appointments</div>
+              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>{totalAppointments}</div>
+              <div style={{ fontSize: '12px', color: 'var(--color-healthy)', marginTop: '4px', fontWeight: 500 }}>Today scheduled</div>
+            </div>
+          </div>
         </div>
-        <button className="btn btn-primary" onClick={() => openAddModal('08:00', 'Operatory A')}>
-          + Book Appointment
-        </button>
+
+        <div className="card stat-card" style={{ padding: '20px' }}>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', backgroundColor: 'rgba(59, 130, 246, 0.1)', color: 'var(--secondary-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Users size={24} />
+            </div>
+            <div>
+              <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Checked In</div>
+              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>{checkedInCount}</div>
+              <div style={{ fontSize: '12px', color: 'var(--color-healthy)', marginTop: '4px', fontWeight: 500 }}>Currently in clinic</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="card stat-card" style={{ padding: '20px' }}>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-decay)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Clock size={24} />
+            </div>
+            <div>
+              <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Pending</div>
+              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>{pendingCount}</div>
+              <div style={{ fontSize: '12px', color: 'var(--color-healthy)', marginTop: '4px', fontWeight: 500 }}>Awaiting check-in</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="card stat-card" style={{ padding: '20px' }}>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', backgroundColor: 'rgba(139, 92, 246, 0.1)', color: 'var(--color-crown)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <CheckCircle size={24} />
+            </div>
+            <div>
+              <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Completed</div>
+              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>{completedCount}</div>
+              <div style={{ fontSize: '12px', color: 'var(--color-healthy)', marginTop: '4px', fontWeight: 500 }}>Appointments done</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Grid Schedule */}
@@ -96,9 +160,9 @@ export default function Scheduler({ appointments, patients, onAddAppointment, on
         {/* Row Header */}
         <div className="scheduler-time-col-header"></div>
         {OPERATORIES.map((op, idx) => (
-          <div key={idx} className="scheduler-header-cell">
-            <div>{op.name}</div>
-            <div style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 'normal', marginTop: '2px' }}>
+          <div key={idx} className="scheduler-header-cell" style={{ backgroundColor: 'var(--bg-app)', padding: '20px 14px' }}>
+            <div style={{ fontSize: '15px', color: 'var(--text-primary)', fontWeight: 600 }}>{op.name}</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 400, marginTop: '4px' }}>
               {op.dentist}
             </div>
           </div>
@@ -132,17 +196,51 @@ export default function Scheduler({ appointments, patients, onAddAppointment, on
                         setSelectedAppointment(cellApt);
                         setShowEditModal(true);
                       }}
+                      style={{
+                        backgroundColor: '#F8F9FA',
+                        boxShadow: 'none',
+                        border: 'none',
+                        borderLeft: `3px solid var(--color-${
+                          cellApt.status === 'confirmed' ? 'healthy' : 
+                          cellApt.status === 'completed' ? 'crown' : 
+                          cellApt.status === 'checked-in' ? 'decay' : 
+                          'secondary-blue'
+                        })`,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                        padding: '12px',
+                        height: '100%',
+                        borderRadius: '8px'
+                      }}
                     >
-                      <div className="appointment-patient-name">{cellApt.patientName}</div>
-                      <div className="appointment-details">
-                        <div>{cellApt.type}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '10px', marginTop: '2px' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{cellApt.patientName}</div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{cellApt.type}</div>
+                        <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
                           {cellApt.time} ({cellApt.duration} mins)
                         </div>
                       </div>
-                      <span className="badge badge-neutral" style={{ alignSelf: 'flex-start', scale: '0.85', transformOrigin: 'left', marginTop: '4px' }}>
-                        {cellApt.status.toUpperCase()}
-                      </span>
+                      
+                      <div style={{ 
+                        fontSize: '11px', 
+                        fontWeight: 500,
+                        padding: '4px 10px', 
+                        borderRadius: '12px',
+                        backgroundColor: 
+                          cellApt.status === 'confirmed' ? 'rgba(16, 185, 129, 0.1)' : 
+                          cellApt.status === 'completed' ? 'rgba(139, 92, 246, 0.1)' : 
+                          cellApt.status === 'checked-in' ? 'rgba(245, 158, 11, 0.1)' : 
+                          'rgba(59, 130, 246, 0.1)',
+                        color: 
+                          cellApt.status === 'confirmed' ? 'var(--color-healthy)' : 
+                          cellApt.status === 'completed' ? 'var(--color-crown)' : 
+                          cellApt.status === 'checked-in' ? 'var(--color-decay)' : 
+                          'var(--secondary-blue)'
+                      }}>
+                        {cellApt.status === 'checked-in' ? 'Checked In' : cellApt.status.charAt(0).toUpperCase() + cellApt.status.slice(1)}
+                      </div>
                     </div>
                   ) : (
                     // Clickable empty cell
@@ -165,7 +263,7 @@ export default function Scheduler({ appointments, patients, onAddAppointment, on
                       onClick={() => openAddModal(slot.value, op.name)}
                       title="Click to book this slot"
                     >
-                      <span style={{ fontSize: '20px', color: 'var(--text-muted)' }}>+</span>
+                      <span style={{ fontSize: '18px', color: 'var(--border-color)' }}>+</span>
                     </button>
                   )}
                 </div>
@@ -173,6 +271,114 @@ export default function Scheduler({ appointments, patients, onAddAppointment, on
             })}
           </div>
         ))}
+      </div>
+
+      {/* Bottom Layout (Upcoming & Quick Actions) */}
+      <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '24px', marginTop: '8px' }}>
+        
+        {/* Upcoming Patients Card */}
+        <div className="card" style={{ padding: '24px' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '16px' }}>Upcoming Patients</h3>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {[
+              { name: 'Marcus Sterling', room: 'Operatory B', time: '10:00 AM', status: 'Scheduled' },
+              { name: 'Olivia Bennett', room: 'Operatory A', time: '11:00 AM', status: 'Pending' },
+              { name: 'Daniel Lee', room: 'Hygiene Room', time: '01:00 PM', status: 'Pending' },
+              { name: 'New Patient Consult', room: 'Hygiene Room', time: '01:00 PM', status: 'Pending', isNew: true },
+              { name: 'Sophia Martinez', room: 'Operatory A', time: '02:00 PM', status: 'Pending', isNew: true }
+            ].map((p, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                  <div style={{ 
+                    width: 40, height: 40, borderRadius: '50%', 
+                    backgroundColor: 'rgba(13, 148, 136, 0.1)', 
+                    color: p.isNew ? 'var(--color-crown)' : 'var(--primary-teal)', 
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                    fontWeight: 600, fontSize: '14px' 
+                  }}>
+                    {p.isNew ? 'NP' : p.name.split(' ').map(n=>n[0]).join('')}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>{p.name}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{p.time} • {p.room}</div>
+                  </div>
+                </div>
+                <div style={{ 
+                  fontSize: '11px', fontWeight: 500, padding: '4px 12px', borderRadius: '12px',
+                  backgroundColor: p.status === 'Scheduled' ? 'rgba(59, 130, 246, 0.1)' : 'rgba(245, 158, 11, 0.1)',
+                  color: p.status === 'Scheduled' ? 'var(--secondary-blue)' : 'var(--color-decay)'
+                }}>
+                  {p.status}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Quick Actions & Legend */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          
+          <div className="card" style={{ padding: '24px' }}>
+            <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '16px' }}>Quick Actions</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              
+              <button 
+                onClick={() => openAddModal('08:00', 'Operatory A')}
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'transparent', cursor: 'pointer', transition: 'var(--transition-fast)' }}
+                className="hover-bg-light"
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-primary)', fontSize: '13px' }}>
+                  <Calendar size={18} style={{ color: 'var(--color-crown)' }} /> Book Appointment
+                </div>
+                <ChevronRight size={16} style={{ color: 'var(--text-muted)' }} />
+              </button>
+
+              <button style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'transparent', cursor: 'pointer', transition: 'var(--transition-fast)' }} className="hover-bg-light">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-primary)', fontSize: '13px' }}>
+                  <UserPlus size={18} style={{ color: 'var(--color-crown)' }} /> Walk-in patient
+                </div>
+                <ChevronRight size={16} style={{ color: 'var(--text-muted)' }} />
+              </button>
+
+              <button style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'transparent', cursor: 'pointer', transition: 'var(--transition-fast)' }} className="hover-bg-light">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-primary)', fontSize: '13px' }}>
+                  <Clock size={18} style={{ color: 'var(--color-crown)' }} /> Block Time
+                </div>
+                <ChevronRight size={16} style={{ color: 'var(--text-muted)' }} />
+              </button>
+
+              <button style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'transparent', cursor: 'pointer', transition: 'var(--transition-fast)' }} className="hover-bg-light">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-primary)', fontSize: '13px' }}>
+                  <Coffee size={18} style={{ color: 'var(--color-crown)' }} /> Manage Breaks
+                </div>
+                <ChevronRight size={16} style={{ color: 'var(--text-muted)' }} />
+              </button>
+            </div>
+            
+            <div style={{ marginTop: '24px', padding: '16px', backgroundColor: 'var(--bg-app)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '12px' }}>Schedule Legend</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '11px', color: 'var(--text-secondary)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--color-healthy)' }}></div> Confirmed
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--secondary-blue)' }}></div> Scheduled
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--color-decay)' }}></div> Pending
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--color-crown)' }}></div> Completed
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#3B82F6' }}></div> Follow-up
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
 
       {/* ADD APPOINTMENT MODAL */}

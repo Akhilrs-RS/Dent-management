@@ -1,0 +1,11 @@
+@DentBackend_HostAddress = http://localhost:5092
+
+GET {{DentBackend_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+
+GET {{DentBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

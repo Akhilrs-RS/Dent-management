@@ -2055,11 +2055,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/akhilrs/Desktop/Galletrix/Dental/backend/backend.csproj",
+      "projectUniqueName": "/Users/akhilrs/Desktop/Galletrix/dent/backend/backend.csproj",
       "projectName": "backend",
-      "projectPath": "/Users/akhilrs/Desktop/Galletrix/Dental/backend/backend.csproj",
+      "projectPath": "/Users/akhilrs/Desktop/Galletrix/dent/backend/backend.csproj",
       "packagesPath": "/Users/akhilrs/.nuget/packages/",
-      "outputPath": "/Users/akhilrs/Desktop/Galletrix/Dental/backend/obj/",
+      "outputPath": "/Users/akhilrs/Desktop/Galletrix/dent/backend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/akhilrs/.nuget/NuGet/NuGet.Config"

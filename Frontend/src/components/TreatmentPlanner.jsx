@@ -136,7 +136,7 @@ export default function TreatmentPlanner({
 
   // Calculations
   const subtotal = treatmentPlan.reduce((sum, item) => sum + item.price, 0);
-  const insRate = activePatient.insurance.coveragePercent / 100;
+  const insRate = (activePatient.insurance?.coveragePercent || 0) / 100;
   const insuranceCoverage = subtotal * insRate;
   const patientResponsibility = subtotal - insuranceCoverage;
 
@@ -169,7 +169,7 @@ export default function TreatmentPlanner({
         <div>
           <h2>Treatment Planning & Ledger Studio</h2>
           <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-            Patient: <strong>{activePatient.name}</strong> ({activePatient.id}) | Insurer: <strong>{activePatient.insurance.provider}</strong>
+            Patient: <strong>{activePatient.name}</strong> ({activePatient.id}) | Insurer: <strong>{activePatient.insurance?.provider || 'None'}</strong>
           </div>
         </div>
         
@@ -329,7 +329,7 @@ export default function TreatmentPlanner({
 
               <div className="flex-between" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '8px' }}>
                 <span style={{ color: 'var(--text-secondary)' }}>
-                  Insurance Pay ({activePatient.insurance.coveragePercent}%):
+                  Insurance Pay ({activePatient.insurance?.coveragePercent || 0}%):
                 </span>
                 <span style={{ color: 'var(--color-healthy)', fontWeight: 600 }}>
                   -₹{insuranceCoverage.toFixed(2)}
@@ -347,12 +347,12 @@ export default function TreatmentPlanner({
 
               <div className="flex-between" style={{ fontSize: '11px', color: 'var(--text-muted)', backgroundColor: 'var(--primary-teal-light)', padding: '10px', borderRadius: '8px' }}>
                 <div>
-                  <strong>Insurer:</strong> {activePatient.insurance.provider} <br />
-                  <strong>Policy #:</strong> {activePatient.insurance.policyNumber}
+                  <strong>Insurer:</strong> {activePatient.insurance?.provider || 'None'} <br />
+                  <strong>Policy #:</strong> {activePatient.insurance?.policyNumber || 'N/A'}
                 </div>
                 <div>
                   <strong>Deductible Status:</strong><br />
-                  {activePatient.insurance.deductibleMet ? 'Deductible Met ✓' : 'Deductible Pending (₹100)'}
+                  {activePatient.insurance?.deductibleMet ? 'Deductible Met ✓' : 'Deductible Pending (₹100)'}
                 </div>
               </div>
 
@@ -535,8 +535,8 @@ export default function TreatmentPlanner({
                 <strong>DATE:</strong> {new Date().toLocaleDateString()}
               </div>
               <div style={{ textAlign: 'right' }}>
-                <strong>CARRIER:</strong> {activePatient.insurance.provider} <br />
-                <strong>POLICY ID:</strong> {activePatient.insurance.policyNumber} <br />
+                <strong>CARRIER:</strong> {activePatient.insurance?.provider || 'N/A'} <br />
+                <strong>POLICY ID:</strong> {activePatient.insurance?.policyNumber || 'N/A'} <br />
                 <strong>INVOICE #:</strong> INV-{Math.floor(10000 + Math.random() * 90000)}
               </div>
             </div>
@@ -564,7 +564,7 @@ export default function TreatmentPlanner({
 
             <div className="invoice-summary">
               <div>SUBTOTAL: ₹{subtotal.toFixed(2)}</div>
-              <div>INSURANCE CO-PAY ({activePatient.insurance.coveragePercent}%): -₹{insuranceCoverage.toFixed(2)}</div>
+              <div>INSURANCE CO-PAY ({activePatient.insurance?.coveragePercent || 0}%): -₹{insuranceCoverage.toFixed(2)}</div>
               <div className="invoice-total-row">PATIENT OUT-OF-POCKET: ₹{patientResponsibility.toFixed(2)}</div>
             </div>
 

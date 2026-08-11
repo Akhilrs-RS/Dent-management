@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FQJpxJcO5vE=",
+  "dgSpecHash": "tG2z8J1m2WM=",
   "success": true,
-  "projectFilePath": "/Users/akhilrs/Desktop/Galletrix/Dental/backend/backend.csproj",
+  "projectFilePath": "/Users/akhilrs/Desktop/Galletrix/dent/backend/backend.csproj",
   "expectedPackageFiles": [
     "/Users/akhilrs/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/akhilrs/.nuget/packages/microsoft.aspnetcore.openapi/11.0.0-preview.3.26207.106/microsoft.aspnetcore.openapi.11.0.0-preview.3.26207.106.nupkg.sha512",
@@ -38,9 +38,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'Microsoft.OpenApi' 3.3.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
-      "projectPath": "/Users/akhilrs/Desktop/Galletrix/Dental/backend/backend.csproj",
+      "projectPath": "/Users/akhilrs/Desktop/Galletrix/dent/backend/backend.csproj",
       "warningLevel": 1,
-      "filePath": "/Users/akhilrs/Desktop/Galletrix/Dental/backend/backend.csproj",
+      "filePath": "/Users/akhilrs/Desktop/Galletrix/dent/backend/backend.csproj",
       "libraryId": "Microsoft.OpenApi",
       "targetGraphs": [
         "net11.0"

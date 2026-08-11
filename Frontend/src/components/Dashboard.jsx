@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { CLINIC_ANALYTICS } from '../data/mockData';
 import { IndianRupee, Calendar, Search, ChevronRight, User, Stethoscope, CheckCircle, Bell, FileText, UserPlus, FileImage, ShieldAlert } from 'lucide-react';
 
