@@ -4,38 +4,21 @@ import {
   ChevronDown, Phone, Mail, Edit2, Trash2, CalendarDays
 } from 'lucide-react';
 
-export default function DoctorsStaffPage() {
+export default function DoctorsStaffPage({ staffList = [] }) {
   const [activeTab, setActiveTab] = useState('All Members');
 
   const metrics = [
-    { title: 'Total Members', value: '28', subtitle: 'All active members', icon: <Users size={24} color="#10b981" />, bgColor: '#f0fdf4', borderColor: '#dcfce7' },
-    { title: 'Doctors', value: '12', subtitle: 'Clinical doctors', icon: <Stethoscope size={24} color="#10b981" />, bgColor: '#f0fdf4', borderColor: '#dcfce7' },
-    { title: 'Staff Members', value: '16', subtitle: 'Non-clinical staff', icon: <UserCheck size={24} color="#3b82f6" />, bgColor: '#eff6ff', borderColor: '#dbeafe' },
-    { title: 'On Leave', value: '2', subtitle: 'Currently on leave', icon: <UserMinus size={24} color="#f97316" />, bgColor: '#fff7ed', borderColor: '#ffedd5' }
+    { title: 'Total Members', value: staffList.length.toString(), subtitle: 'All active members', icon: <Users size={24} color="#10b981" />, bgColor: '#f0fdf4', borderColor: '#dcfce7' },
+    { title: 'Doctors', value: staffList.filter(s => s.role.includes('Dentist') || s.role.includes('Surgeon') || s.role.includes('Orthodontist') || s.role.includes('Endodontist')).length.toString(), subtitle: 'Clinical doctors', icon: <Stethoscope size={24} color="#10b981" />, bgColor: '#f0fdf4', borderColor: '#dcfce7' },
+    { title: 'Staff Members', value: staffList.filter(s => !s.role.includes('Dentist') && !s.role.includes('Surgeon') && !s.role.includes('Orthodontist') && !s.role.includes('Endodontist')).length.toString(), subtitle: 'Non-clinical staff', icon: <UserCheck size={24} color="#3b82f6" />, bgColor: '#eff6ff', borderColor: '#dbeafe' },
+    { title: 'On Leave', value: '0', subtitle: 'Currently on leave', icon: <UserMinus size={24} color="#f97316" />, bgColor: '#fff7ed', borderColor: '#ffedd5' }
   ];
 
-  const staffList = [
-    { name: 'Dr. Sarah Johnson', id: 'ID: D-101', role: 'General Dentist', roleBg: '#dcfce7', roleColor: '#15803d', dept: 'Preventive Care', phone: '(555) 123-4567', email: 'sarah.j@auradental.com', sched: 'Mon - Fri', time: '09:00 AM - 05:00 PM', initials: 'SJ' },
-    { name: 'Dr. Michael Brown', id: 'ID: D-102', role: 'Orthodontist', roleBg: '#e0f2fe', roleColor: '#0369a1', dept: 'Orthodontics', phone: '(555) 234-5678', email: 'michael.b@auradental.com', sched: 'Mon - Sat', time: '10:00 AM - 06:00 PM', initials: 'MB' },
-    { name: 'Dr. Emily Davis', id: 'ID: D-103', role: 'Endodontist', roleBg: '#f3e8ff', roleColor: '#7e22ce', dept: 'Endodontics', phone: '(555) 345-6789', email: 'emily.d@auradental.com', sched: 'Mon - Fri', time: '08:30 AM - 04:30 PM', initials: 'ED' },
-    { name: 'Dr. James Wilson', id: 'ID: D-104', role: 'Oral Surgeon', roleBg: '#ffedd5', roleColor: '#c2410c', dept: 'Oral Surgery', phone: '(555) 456-7890', email: 'james.w@auradental.com', sched: 'Tue - Sat', time: '10:00 AM - 06:00 PM', initials: 'JW' },
-    { name: 'Dr. Lisa Anderson', id: 'ID: D-105', role: 'Pediatric Dentist', roleBg: '#fce7f3', roleColor: '#be185d', dept: 'Pediatric Dentistry', phone: '(555) 567-8901', email: 'lisa.a@auradental.com', sched: 'Mon - Fri', time: '09:00 AM - 05:00 PM', initials: 'LA' },
-    { name: 'Anna Smith', id: 'ID: S-201', role: 'Receptionist', roleBg: '#fef3c7', roleColor: '#b45309', dept: 'Front Office', phone: '(555) 111-2222', email: 'anna.s@auradental.com', sched: 'Mon - Fri', time: '08:30 AM - 05:30 PM', initials: 'AS' },
-    { name: 'Mark Thompson', id: 'ID: S-202', role: 'Dental Assistant', roleBg: '#e0e7ff', roleColor: '#4338ca', dept: 'Clinical Support', phone: '(555) 222-3333', email: 'mark.t@auradental.com', sched: 'Mon - Sat', time: '09:00 AM - 06:00 PM', initials: 'MT' },
-    { name: 'Priya Lee', id: 'ID: S-203', role: 'Hygienist', roleBg: '#fef08a', roleColor: '#a16207', dept: 'Preventive Care', phone: '(555) 333-4444', email: 'priya.l@auradental.com', sched: 'Mon - Fri', time: '09:00 AM - 05:00 PM', initials: 'PL' }
-  ];
-
-  const depts = [
-    { name: 'Preventive Care', count: 6, icon: <Stethoscope size={14} color="#3b82f6" /> },
-    { name: 'Orthodontics', count: 3, icon: <Stethoscope size={14} color="#3b82f6" /> },
-    { name: 'Endodontics', count: 2, icon: <Stethoscope size={14} color="#3b82f6" /> },
-    { name: 'Oral Surgery', count: 2, icon: <Stethoscope size={14} color="#3b82f6" /> },
-    { name: 'Pediatric Dentistry', count: 2, icon: <Stethoscope size={14} color="#3b82f6" /> },
-    { name: 'Front Office', count: 4, icon: <Users size={14} color="#64748b" /> },
-    { name: 'Clinical Support', count: 5, icon: <Stethoscope size={14} color="#3b82f6" /> },
-    { name: 'Laboratory', count: 2, icon: <Stethoscope size={14} color="#3b82f6" /> },
-    { name: 'Others', count: 2, icon: <Users size={14} color="#64748b" /> }
-  ];
+  const depts = [...new Set(staffList.map(s => s.dept))].map(deptName => ({
+    name: deptName,
+    count: staffList.filter(s => s.dept === deptName).length,
+    icon: <Stethoscope size={14} color="#3b82f6" />
+  }));
 
   return (
     <div style={{ padding: '32px', backgroundColor: 'var(--bg-app)', minHeight: '100vh', width: '100%' }}>

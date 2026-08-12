@@ -152,61 +152,69 @@ export default function Dashboard({
       <div className="dashboard-grid">
         <div className="card stat-card">
           <div className="stat-header">
-            <h3>Today's Production</h3>
+            <h3 style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Today's Production</h3>
           </div>
-          <div className="stat-body">
-            <div className="stat-icon">
-              <IndianRupee size={22} />
+          <div className="stat-body" style={{ alignItems: 'flex-start', marginTop: '12px' }}>
+            <div className="stat-icon" style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-healthy)' }}>
+              <IndianRupee size={20} />
             </div>
-            <div className="stat-value">₹{dailyRevenue.toLocaleString()}</div>
-          </div>
-          <div className="stat-change positive">
-            <span>↑ 12% vs last Friday</span>
+            <div>
+              <div className="stat-value" style={{ fontSize: '24px', fontWeight: 700 }}>₹ {dailyRevenue.toLocaleString()}</div>
+              <div className="stat-change positive" style={{ marginTop: '8px' }}>
+                <span style={{ background: 'none', padding: 0, fontSize: '11px', color: 'var(--color-healthy)' }}>↑ 12% vs last Friday</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="card stat-card">
           <div className="stat-header">
-            <h3>Monthly Billings</h3>
+            <h3 style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Monthly Billings</h3>
           </div>
-          <div className="stat-body">
-            <div className="stat-icon">
-              <Calendar size={22} />
+          <div className="stat-body" style={{ alignItems: 'flex-start', marginTop: '12px' }}>
+            <div className="stat-icon" style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)', color: 'var(--secondary-blue)' }}>
+              <Calendar size={20} />
             </div>
-            <div className="stat-value">₹{monthlyRevenue.toLocaleString()}</div>
-          </div>
-          <div className="stat-change positive">
-            <span>↑ 8.4% last month</span>
+            <div>
+              <div className="stat-value" style={{ fontSize: '24px', fontWeight: 700 }}>₹ {monthlyRevenue.toLocaleString()}</div>
+              <div className="stat-change positive" style={{ marginTop: '8px' }}>
+                <span style={{ background: 'none', padding: 0, fontSize: '11px', color: 'var(--color-healthy)' }}>↑ 8.4% last month</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="card stat-card">
           <div className="stat-header">
-            <h3>Operatory Occupancy</h3>
+            <h3 style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Operatory Occupancy</h3>
           </div>
-          <div className="stat-body">
-            <div className="stat-icon">
-              <span style={{ fontSize: '20px' }}>🦷</span>
+          <div className="stat-body" style={{ alignItems: 'flex-start', marginTop: '12px' }}>
+            <div className="stat-icon" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-decay)' }}>
+              <span style={{ fontSize: '18px' }}>🦷</span>
             </div>
-            <div className="stat-value">{occupancyRate}%</div>
-          </div>
-          <div className="stat-change negative">
-            <span>↓ 2% vs target 87%</span>
+            <div>
+              <div className="stat-value" style={{ fontSize: '24px', fontWeight: 700 }}>{occupancyRate}%</div>
+              <div className="stat-change negative" style={{ marginTop: '8px' }}>
+                <span style={{ background: 'none', padding: 0, fontSize: '11px', color: 'var(--color-fracture)' }}>↓ 2% vs target 87%</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="card stat-card">
           <div className="stat-header">
-            <h3>Active Patients</h3>
+            <h3 style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Active Patients</h3>
           </div>
-          <div className="stat-body">
-            <div className="stat-icon">
-              <User size={22} />
+          <div className="stat-body" style={{ alignItems: 'flex-start', marginTop: '12px' }}>
+            <div className="stat-icon" style={{ backgroundColor: 'rgba(168, 85, 247, 0.1)', color: '#a855f7' }}>
+              <User size={20} />
             </div>
-            <div className="stat-value">{activePatients.toLocaleString()}</div>
-          </div>
-          <div className="stat-change positive">
-            <span>↑ 24 new this month</span>
+            <div>
+              <div className="stat-value" style={{ fontSize: '24px', fontWeight: 700 }}>{activePatients.toLocaleString()}</div>
+              <div className="stat-change positive" style={{ marginTop: '8px' }}>
+                <span style={{ background: 'none', padding: 0, fontSize: '11px', color: 'var(--color-healthy)' }}>↑ 24 new this month</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -214,10 +222,13 @@ export default function Dashboard({
       {/* Role-Based Intake & Waiting Room Queue Panels */}
       {userRole === 'receptionist' ? (
         <div className="card" style={{ padding: '24px' }}>
-          <div className="flex-between mb-sm" style={{ flexWrap: 'wrap', gap: '12px' }}>
+          <div className="flex-between mb-sm" style={{ flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
             <div>
               <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>Patient Intake & Reception Lounge</h2>
             </div>
+            <button className="btn btn-primary" onClick={onRegisterPatient} style={{ padding: '6px 14px', fontSize: '12px', borderRadius: '20px' }}>
+              Register New Patient
+            </button>
           </div>
 
           <div style={{ position: 'relative', marginTop: '16px' }}>
@@ -260,15 +271,32 @@ export default function Dashboard({
                       <div>
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
                           <strong style={{ color: 'var(--text-primary)', fontSize: '14px' }}>{p.name}</strong>
-                          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>#{p.id}</span>
+                          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>ID: {p.id}</span>
                         </div>
-                        <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                          Age/Gender: {p.age} yrs, {p.gender} | Contact: {p.phone}
+                        <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px', fontWeight: 500 }}>
+                          {p.age} Yrs, {p.gender} • {p.phone}
                         </div>
                       </div>
                     </div>
 
                     <div className="flex-row-center" style={{ gap: '10px' }}>
+                      {/* Medical Alerts Tags */}
+                      {p.medicalAlerts && p.medicalAlerts.length > 0 && (
+                        <div style={{ display: 'flex', gap: '6px', marginRight: '16px' }}>
+                          {p.medicalAlerts.map((alert, i) => (
+                            <span key={i} style={{ 
+                              fontSize: '10px', 
+                              padding: '2px 8px', 
+                              borderRadius: '10px', 
+                              backgroundColor: alert.toLowerCase().includes('bp') ? 'rgba(245, 158, 11, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
+                              color: alert.toLowerCase().includes('bp') ? 'var(--color-decay)' : 'var(--color-fracture)', 
+                              border: `1px solid ${alert.toLowerCase().includes('bp') ? 'rgba(245, 158, 11, 0.3)' : 'rgba(239, 68, 68, 0.3)'}` 
+                            }}>
+                              {alert}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                       {todayApt ? (
                         <>
                           {todayApt.status === 'checked-in' && (

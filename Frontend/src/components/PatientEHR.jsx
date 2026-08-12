@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DentalChart from './DentalChart';
-import teethProfileImg from '../assets/teeth_profile.png';
+import teethProfileImg from '../assets/icon.png';
 
 export default function PatientEHR({ 
   userRole, 
@@ -173,7 +173,16 @@ export default function PatientEHR({
   };
 
   return (
-    <div className="ehr-layout">
+    <div className="ehr-page-container">
+      <div className="page-header" style={{ marginBottom: '24px' }}>
+        <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--text-primary)', marginBottom: '8px' }}>
+          Electronic Health Records
+        </h1>
+        <p style={{ fontSize: '15px', color: 'var(--text-secondary)', margin: 0 }}>
+          Comprehensive patient directory, medical alerts, charting and radiology.
+        </p>
+      </div>
+      <div className="ehr-layout">
       
       {/* Patient Directory Sidebar */}
       <div className="patient-list-sidebar">
@@ -548,6 +557,7 @@ export default function PatientEHR({
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 }

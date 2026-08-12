@@ -18,6 +18,11 @@ export default function App() {
   const [patients, setPatients] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [analytics, setAnalytics] = useState(null);
+  const [staff, setStaff] = useState([]);
+  const [invoices, setInvoices] = useState([]);
+  const [treatments, setTreatments] = useState([]);
+  const [followUps, setFollowUps] = useState([]);
+  const [transactions, setTransactions] = useState([]);
   const [activePatientId, setActivePatientId] = useState('P-101');
   const [currentView, setCurrentView] = useState('dashboard');
   const [themeMode, setThemeMode] = useState('dark');
@@ -62,13 +67,82 @@ export default function App() {
         const data = await res.json();
         setAnalytics(data);
       }
-    } catch (e) {
-      console.error("Failed to fetch live analytics:", e);
+    } catch (err) {
+      console.error('Failed to fetch analytics', err);
+    }
+  };
+
+  const fetchStaff = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/staff`);
+      if (res.ok) {
+        const data = await res.json();
+        setStaff(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch staff', err);
+    }
+  };
+
+  const fetchInvoices = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/invoices`);
+      if (res.ok) {
+        const data = await res.json();
+        setInvoices(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch invoices', err);
+    }
+  };
+
+  const fetchTreatments = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/treatments/categories`);
+      if (res.ok) {
+        const data = await res.json();
+        setTreatments(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch treatments', err);
+    }
+  };
+
+  const fetchFollowUps = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/followups`);
+      if (res.ok) {
+        const data = await res.json();
+        setFollowUps(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch followUps', err);
+    }
+  };
+
+  const fetchTransactions = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/transactions`);
+      if (res.ok) {
+        const data = await res.json();
+        setTransactions(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch transactions', err);
     }
   };
 
   const fetchAllData = async () => {
-    await Promise.all([fetchPatients(), fetchAppointments(), fetchAnalytics()]);
+    await Promise.all([
+      fetchPatients(), 
+      fetchAppointments(), 
+      fetchAnalytics(),
+      fetchStaff(),
+      fetchInvoices(),
+      fetchTreatments(),
+      fetchFollowUps(),
+      fetchTransactions()
+    ]);
   };
 
   useEffect(() => {
@@ -447,21 +521,30 @@ export default function App() {
             <AppointmentsPage 
               appointments={appointments}
               patients={patients}
+              followUps={followUps}
             />
           )}
 
           {currentView === 'treatments' && (
             <TreatmentsPage 
               patients={patients}
+              treatmentCategories={treatments}
+              analytics={analytics}
             />
           )}
 
           {currentView === 'doctors' && (
-            <DoctorsStaffPage />
+            <DoctorsStaffPage 
+              staffList={staff}
+            />
           )}
 
           {currentView === 'billing' && (
-            <BillingPaymentsPage />
+            <BillingPaymentsPage 
+              invoices={invoices}
+              transactions={transactions}
+              analytics={analytics}
+            />
           )}
 
           {currentView === 'planner' && (

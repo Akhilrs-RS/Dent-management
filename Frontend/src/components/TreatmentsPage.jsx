@@ -4,48 +4,33 @@ import {
   PauseCircle, Activity, Stethoscope, ChevronRight 
 } from 'lucide-react';
 
-export default function TreatmentsPage({ patients }) {
+export default function TreatmentsPage({ patients, treatmentCategories = [] }) {
   const [activeTab, setActiveTab] = useState('All Treatments');
   const [activeCategory, setActiveCategory] = useState('All Categories');
 
+  const categories = ['All Categories', ...treatmentCategories.map(c => c.name)];
+
+  const allTreatments = patients.flatMap(p => 
+    (p.treatmentPlan || []).map(tp => ({
+      patient: p.name,
+      plan: tp.name,
+      category: treatmentCategories.find(c => c.name.toLowerCase().includes(tp.name.toLowerCase()))?.name || 'General',
+      status: tp.status === 'completed' ? 'Completed' : 'In Progress',
+      progress: tp.status === 'completed' ? 100 : 60,
+      updated: 'Today'
+    }))
+  );
+
+  const recentPlans = allTreatments.slice(0, 4);
+
   const metrics = [
-    { title: 'Total Treatments', value: '128', subtitle: 'All time', icon: <Stethoscope size={24} color="#10b981" />, bgColor: '#f0fdf4', borderColor: '#dcfce7' },
-    { title: 'In Progress', value: '32', subtitle: 'Active treatments', icon: <Activity size={24} color="#a855f7" />, bgColor: '#faf5ff', borderColor: '#f3e8ff' },
-    { title: 'Completed', value: '86', subtitle: 'Successfully completed', icon: <CheckCircle2 size={24} color="#f59e0b" />, bgColor: '#fffbeb', borderColor: '#fef3c7' },
-    { title: 'On Hold', value: '10', subtitle: 'Awaiting action', icon: <PauseCircle size={24} color="#3b82f6" />, bgColor: '#eff6ff', borderColor: '#dbeafe' }
+    { title: 'Total Treatments', value: allTreatments.length.toString(), subtitle: 'All time', icon: <Stethoscope size={24} color="#10b981" />, bgColor: '#f0fdf4', borderColor: '#dcfce7' },
+    { title: 'In Progress', value: allTreatments.filter(t => t.status === 'In Progress').length.toString(), subtitle: 'Active treatments', icon: <Activity size={24} color="#a855f7" />, bgColor: '#faf5ff', borderColor: '#f3e8ff' },
+    { title: 'Completed', value: allTreatments.filter(t => t.status === 'Completed').length.toString(), subtitle: 'Successfully completed', icon: <CheckCircle2 size={24} color="#f59e0b" />, bgColor: '#fffbeb', borderColor: '#fef3c7' },
+    { title: 'On Hold', value: '0', subtitle: 'Awaiting action', icon: <PauseCircle size={24} color="#3b82f6" />, bgColor: '#eff6ff', borderColor: '#dbeafe' }
   ];
 
-  const categories = [
-    'All Categories',
-    'Preventive Care',
-    'Restorative',
-    'Cosmetic Dentistry',
-    'Orthodontics',
-    'Endodontics',
-    'Oral Surgery',
-    'Others......'
-  ];
 
-  const treatmentCards = [
-    { name: 'Preventive Care', count: 8, desc: 'Regular check-ups, cleanings, and preventive treatments.' },
-    { name: 'Restorative', count: 12, desc: 'Fillings, crowns, bridges, and restoration procedures.' },
-    { name: 'Cosmetic Dentistry', count: 9, desc: 'Teeth whitening, veneers, bonding, and smile makeovers.' },
-    { name: 'Orthodontics', count: 7, desc: 'Braces, aligners, retainers, and teeth alignment.' },
-    { name: 'Endodontics', count: 6, desc: 'Root canal therapy and related treatments.' },
-    { name: 'Oral Surgery', count: 4, desc: 'Extractions, implants, and surgical procedures.' },
-    { name: 'Periodontics', count: 5, desc: 'Gum treatments and periodontal care.' },
-    { name: 'Prosthodontics', count: 7, desc: 'Dentures, implants, and prosthesis solutions.' },
-    { name: 'Emergency Care', count: 4, desc: 'Urgent dental care and emergency treatments.' },
-    { name: 'Radiology', count: 4, desc: 'X-rays, imaging, and diagnostic procedures.' },
-    { name: 'Radiol/Othersogy', count: 6, desc: 'Miscellaneous and specialized treatments.' }
-  ];
-
-  const recentPlans = [
-    { patient: 'Eleanor Vance', plan: 'Full Mouth Restoration', category: 'Restorative', status: 'In Progress', progress: 60, updated: 'May 24, 2024' },
-    { patient: 'Marcus Sterling', plan: 'Full Mouth Restoration', category: 'Restorative', status: 'In Progress', progress: 60, updated: 'May 24, 2024' },
-    { patient: 'Chloe Park', plan: 'Full Mouth Restoration', category: 'Restorative', status: 'In Progress', progress: 60, updated: 'May 24, 2024' },
-    { patient: 'Samuel Henderson', plan: 'Full Mouth Restoration', category: 'Restorative', status: 'In Progress', progress: 60, updated: 'May 24, 2024' }
-  ];
 
   // Quick tooth icon using SVG path for authenticity
   const ToothIcon = ({ color = "#10b981" }) => (
@@ -153,8 +138,8 @@ export default function TreatmentsPage({ patients }) {
 
           {/* Treatment Cards Grid */}
           <div style={{ flex: '1', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
-            {treatmentCards.map((card, i) => (
-              <div key={i} style={{ backgroundColor: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '20px', display: 'flex', flexDirection: 'column' }}>
+            {treatmentCategories.map((card, i) => (
+              <div key={i} style={{ backgroundColor: '#fff', borderRadius: '12px', padding: '24px', border: '1px solid #e2e8f0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
                   <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#f0fdf4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <ToothIcon />

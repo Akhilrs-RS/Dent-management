@@ -5,43 +5,18 @@ import {
   SlidersHorizontal 
 } from 'lucide-react';
 
-export default function AppointmentsPage({ appointments, patients }) {
+export default function AppointmentsPage({ appointments = [], patients = [], followUps = [] }) {
   const [activeTab, setActiveTab] = useState('All');
 
-  // Hardcoded mockup data to exactly match screenshot metrics & lists where app data might fall short
   const metrics = [
-    { title: "Today's Appointments", value: '12', trend: '↑ 2 vs yesterday', trendUp: true, icon: <Calendar size={20} color="#10b981" /> },
-    { title: "Confirmed", value: '28', trend: '↑ 8 vs last 7 days', trendUp: true, icon: <CheckCircle2 size={20} color="#10b981" /> },
-    { title: "Pending", value: '6', trend: '↓ 1 vs last 7 days', trendUp: false, icon: <Clock size={20} color="#f59e0b" /> },
-    { title: "Canceled", value: '3', trend: '↓ 2 vs last 7 days', trendUp: false, icon: <XCircle size={20} color="#8b5cf6" /> }
-  ];
-
-  const appointmentList = [
-    { time: '09:00 AM', initials: 'EV', name: 'Eleanor Vance', id: 'ID - P - 2011', doctor: 'Dr. Marcus Sterling', docId: 'ID - D - 2011', reason: 'Dental Cleaning', status: 'Confirmed', statusColor: '#dcfce7', statusText: '#15803d' },
-    { time: '09:45 AM', initials: 'JW', name: 'James Wilson', id: 'ID - P - 2011', doctor: 'Dr. Marcus Sterling', docId: 'ID - D - 2011', reason: 'Cavity Filling', status: 'In-Progress', statusColor: '#f3e8ff', statusText: '#7e22ce' },
-    { time: '10:30 AM', initials: 'MS', name: 'Mia Smith', id: 'ID - P - 2011', doctor: 'Dr. Aisha Patel', docId: 'ID - D - 2011', reason: 'Braces Adjustment', status: 'Confirmed', statusColor: '#dcfce7', statusText: '#15803d' },
-    { time: '11:15 AM', initials: 'EV', name: 'Eleanor Vance', id: 'ID - P - 2011', doctor: 'Dr. Marcus Sterling', docId: 'ID - D - 2011', reason: 'Dental Cleaning', status: 'Pending', statusColor: '#ffedd5', statusText: '#c2410c' },
-    { time: '01:00 PM', initials: 'EV', name: 'Eleanor Vance', id: 'ID - P - 2011', doctor: 'Dr. Marcus Sterling', docId: 'ID - D - 2011', reason: 'Dental Cleaning', status: 'Confirmed', statusColor: '#dcfce7', statusText: '#15803d' },
-    { time: '02:00 PM', initials: 'EV', name: 'Eleanor Vance', id: 'ID - P - 2011', doctor: 'Dr. Marcus Sterling', docId: 'ID - D - 2011', reason: 'Dental Cleaning', status: 'Completed', statusColor: '#e0f2fe', statusText: '#0369a1' },
-    { time: '03:00 PM', initials: 'EV', name: 'Eleanor Vance', id: 'ID - P - 2011', doctor: 'Dr. Marcus Sterling', docId: 'ID - D - 2011', reason: 'Dental Cleaning', status: 'Confirmed', statusColor: '#dcfce7', statusText: '#15803d' }
-  ];
-
-  const followUps = [
-    { date: 'May 23', name: 'Thomas Parker', reason: 'Consultation', doc: 'Dr. Aisha Patel' },
-    { date: 'May 23', name: 'Ava Nguyen', reason: 'Crown Prep', doc: 'Dr. Marcus Sterling' },
-    { date: 'May 24', name: 'Jack Brown', reason: 'Deep Cleaning', doc: 'Dr. Sarah Carter' }
-  ];
-
-  const timeline = [
-    { time: '09:00 AM', name: 'Eleanor Vance', reason: 'Dental Cleaning', status: 'Confirmed', color: '#10b981', statusColor: '#dcfce7', statusText: '#15803d' },
-    { time: '09:45 AM', name: 'James Wilson', reason: 'Cavity Filling', status: 'In-Progress', color: '#8b5cf6', statusColor: '#f3e8ff', statusText: '#7e22ce' },
-    { time: '10:30 AM', name: 'Mia Smith', reason: 'Braces Adjustment', status: 'Confirmed', color: '#10b981', statusColor: '#dcfce7', statusText: '#15803d' },
-    { time: '11:15 AM', name: 'David Lee', reason: 'Tooth Extraction', status: 'Pending', color: '#f59e0b', statusColor: '#ffedd5', statusText: '#c2410c' },
-    { time: '01:00 PM', name: 'Sophie Clark', reason: 'Consultation', status: 'Confirmed', color: '#10b981', statusColor: '#dcfce7', statusText: '#15803d' },
+    { title: 'Total Appointments', value: appointments.length.toString(), icon: <Calendar size={24} color="#3b82f6" />, bgColor: '#eff6ff', borderColor: '#dbeafe' },
+    { title: 'Completed', value: appointments.filter(a => a.status === 'completed').length.toString(), icon: <CheckCircle2 size={24} color="#10b981" />, bgColor: '#f0fdf4', borderColor: '#dcfce7' },
+    { title: 'Pending / Scheduled', value: appointments.filter(a => a.status === 'scheduled' || a.status === 'checked-in').length.toString(), icon: <Clock size={24} color="#f59e0b" />, bgColor: '#fffbeb', borderColor: '#fef3c7' },
+    { title: 'Cancelled', value: appointments.filter(a => a.status === 'cancelled').length.toString(), icon: <XCircle size={24} color="#ef4444" />, bgColor: '#fef2f2', borderColor: '#fee2e2' }
   ];
 
   return (
-    <div style={{ padding: '32px', backgroundColor: 'var(--bg-app)', minHeight: '100vh', width: '100%' }}>
+    <div style={{ padding: '32px', backgroundColor: 'var(--bg-app)', minHeight: '100vh', boxSizing: 'border-box' }}>
       
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px' }}>
@@ -193,21 +168,28 @@ export default function AppointmentsPage({ appointments, patients }) {
           </div>
 
           {/* Upcoming Follow-Ups */}
-          <div>
+          <div style={{ backgroundColor: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '24px', marginBottom: '24px' }}>
             <h3 style={{ fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '16px' }}>Upcoming Follow - Ups</h3>
-            <div style={{ display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '16px' }}>
-              {followUps.map((fu, i) => (
-                <div key={i} style={{ minWidth: '220px', padding: '16px', backgroundColor: 'var(--bg-card)', border: '1px solid #e2e8f0', borderRadius: '12px', display: 'flex', gap: '16px', alignItems: 'center' }}>
-                  <div style={{ textAlign: 'center', paddingRight: '16px', borderRight: '1px solid #e2e8f0' }}>
-                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: '500', marginBottom: '2px' }}>May</p>
-                    <p style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--text-primary)' }}>{fu.date.split(' ')[1]}</p>
+            <div style={{ display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '4px' }}>
+              {followUps.map((fu, i) => {
+                const initials = fu.name.split(' ').map(n => n[0]).join('').substring(0, 2);
+                return (
+                  <div key={i} style={{ minWidth: '280px', padding: '16px', backgroundColor: 'var(--bg-app)', border: '1px solid #e2e8f0', borderRadius: '8px', display: 'flex', gap: '12px', alignItems: 'center' }}>
+                    <div style={{ textAlign: 'center', padding: '8px', border: '1px solid #e2e8f0', borderRadius: '8px', minWidth: '45px', backgroundColor: 'var(--bg-card)' }}>
+                      <p style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: '500', marginBottom: '2px' }}>{fu.date.split(' ')[0]}</p>
+                      <p style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--text-primary)' }}>{fu.date.split(' ')[1]}</p>
+                    </div>
+                    <div style={{ width: 36, height: 36, borderRadius: '50%', backgroundColor: '#fae8dc', color: '#c2410c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '600', fontSize: '12px', flexShrink: 0 }}>
+                      {initials}
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '4px' }}>{fu.name}</p>
+                      <p style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '2px' }}>Follow - up: {fu.reason}</p>
+                      <p style={{ fontSize: '10px', color: 'var(--text-muted)' }}>{fu.time} . {fu.doc}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '4px' }}>{fu.name}</p>
-                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{fu.reason}<br/>{fu.doc}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

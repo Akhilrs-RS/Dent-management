@@ -4,30 +4,17 @@ import {
   Download, ArrowDownLeft, ArrowUpRight, ChevronDown, CheckCircle2 
 } from 'lucide-react';
 
-export default function BillingPaymentsPage() {
+export default function BillingPaymentsPage({ invoices = [], transactions = [], analytics = null }) {
   const metrics = [
-    { title: 'Total Revenue', value: '$ 64,200', trend: '↑ 12.4% vs Apr 1 - Apr 30', trendUp: true, icon: <DollarSign size={20} color="#10b981" />, bgColor: '#f0fdf4', iconBg: '#dcfce7' },
-    { title: 'Total Invoices', value: '152', trend: '↑ 6.5% vs Apr 1 - Apr 30', trendUp: true, icon: <FileText size={20} color="#0ea5e9" />, bgColor: '#f0f9ff', iconBg: '#e0f2fe' },
+    { title: 'Total Revenue', value: `$ ${(analytics?.monthlyRevenue || 64200).toLocaleString()}`, trend: '↑ 12.4% vs Apr 1 - Apr 30', trendUp: true, icon: <DollarSign size={20} color="#10b981" />, bgColor: '#f0fdf4', iconBg: '#dcfce7' },
+    { title: 'Total Invoices', value: invoices.length.toString(), trend: '↑ 6.5% vs Apr 1 - Apr 30', trendUp: true, icon: <FileText size={20} color="#0ea5e9" />, bgColor: '#f0f9ff', iconBg: '#e0f2fe' },
     { title: 'Payments Received', value: '$ 45,750', trend: '↑ 15.3% vs Apr 1 - Apr 30', trendUp: true, icon: <ArrowDownLeft size={20} color="#8b5cf6" />, bgColor: '#faf5ff', iconBg: '#f3e8ff' },
     { title: 'Outstanding Balance', value: '$ 18,450', trend: '↓ 6.2% vs Apr 1 - Apr 30', trendUp: false, icon: <FileText size={20} color="#f97316" />, bgColor: '#fff7ed', iconBg: '#ffedd5' },
-    { title: 'Overdue Invoices', value: '18', trend: '↓ 2 vs Apr 1 - Apr 30', trendUp: false, icon: <FileText size={20} color="#ef4444" />, bgColor: '#fef2f2', iconBg: '#fee2e2' },
+    { title: 'Overdue Invoices', value: invoices.filter(i => i.status === 'Unpaid').length.toString(), trend: '↓ 2 vs Apr 1 - Apr 30', trendUp: false, icon: <FileText size={20} color="#ef4444" />, bgColor: '#fef2f2', iconBg: '#fee2e2' },
     { title: "Today's Collections", value: '$ 3,250', trend: '↑ 10.5% vs Yesterday', trendUp: true, icon: <DollarSign size={20} color="#10b981" />, bgColor: '#f0fdf4', iconBg: '#dcfce7' }
   ];
 
-  const invoices = [
-    { id: 'INV-1054', patient: 'Eleanor Vance', treatment: 'Root Canal Treatment', date: 'May 24, 2024', due: 'May 31, 2024', total: '$2,500', status: 'Unpaid', statusColor: '#fee2e2', statusText: '#ef4444', balance: '$2,500' },
-    { id: 'INV-1053', patient: 'Marcus Sterling', treatment: 'Dental Implant', date: 'May 23, 2024', due: 'May 30, 2024', total: '$4,850', status: 'Partial', statusColor: '#ffedd5', statusText: '#c2410c', balance: '$2,000' },
-    { id: 'INV-1052', patient: 'Chloe Park', treatment: 'Teeth Whitening', date: 'May 23, 2024', due: 'May 23, 2024', total: '$1,500', status: 'Paid', statusColor: '#dcfce7', statusText: '#15803d', balance: '$0' },
-    { id: 'INV-1051', patient: 'Samuel Henderson', treatment: 'Braces Adjustment', date: 'May 22, 2024', due: 'May 29, 2024', total: '$850', status: 'Paid', statusColor: '#dcfce7', statusText: '#15803d', balance: '$0' },
-    { id: 'INV-1050', patient: 'Lisa Anderson', treatment: 'Crown Placement', date: 'May 22, 2024', due: 'May 29, 2024', total: '$2,100', status: 'Paid', statusColor: '#dcfce7', statusText: '#15803d', balance: '$0' }
-  ];
 
-  const transactions = [
-    { type: 'Payment Received', desc: 'INV-1053', amount: '+$1,500', time: '10:30 AM', color: '#10b981' },
-    { type: 'Payment Received', desc: 'INV-1051', amount: '+$850', time: '09:15 AM', color: '#10b981' },
-    { type: 'Invoice Created', desc: 'INV-1054', amount: '$2,500', time: 'Yesterday', color: '#3b82f6' },
-    { type: 'Refund Issued', desc: 'REF-1042', amount: '-$500', time: 'May 22', color: '#ef4444' }
-  ];
 
   return (
     <div style={{ padding: '32px', backgroundColor: 'var(--bg-app)', minHeight: '100vh', width: '100%' }}>

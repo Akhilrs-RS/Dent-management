@@ -16,6 +16,11 @@ public class DentalDbContext : DbContext
     public DbSet<VisitNote> VisitNotes => Set<VisitNote>();
     public DbSet<XRay> XRays => Set<XRay>();
     public DbSet<Appointment> Appointments => Set<Appointment>();
+    public DbSet<StaffMember> StaffMembers => Set<StaffMember>();
+    public DbSet<Invoice> Invoices => Set<Invoice>();
+    public DbSet<TreatmentCategory> TreatmentCategories => Set<TreatmentCategory>();
+    public DbSet<FollowUp> FollowUps => Set<FollowUp>();
+    public DbSet<Transaction> Transactions => Set<Transaction>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -364,6 +369,77 @@ public class DentalDbContext : DbContext
                     Status = "scheduled",
                     Date = "2026-06-19"
                 }
+            });
+            context.SaveChanges();
+        }
+
+        if (!context.StaffMembers.Any())
+        {
+            context.StaffMembers.AddRange(new List<StaffMember>
+            {
+                new() { Name = "Dr. Sarah Johnson", Id = "ID: D-101", Role = "General Dentist", RoleBg = "#dcfce7", RoleColor = "#15803d", Dept = "Preventive Care", Phone = "(555) 123-4567", Email = "sarah.j@auradental.com", Sched = "Mon - Fri", Time = "09:00 AM - 05:00 PM", Initials = "SJ" },
+                new() { Name = "Dr. Michael Brown", Id = "ID: D-102", Role = "Orthodontist", RoleBg = "#e0f2fe", RoleColor = "#0369a1", Dept = "Orthodontics", Phone = "(555) 234-5678", Email = "michael.b@auradental.com", Sched = "Mon - Sat", Time = "10:00 AM - 06:00 PM", Initials = "MB" },
+                new() { Name = "Dr. Emily Davis", Id = "ID: D-103", Role = "Endodontist", RoleBg = "#f3e8ff", RoleColor = "#7e22ce", Dept = "Endodontics", Phone = "(555) 345-6789", Email = "emily.d@auradental.com", Sched = "Mon - Fri", Time = "08:30 AM - 04:30 PM", Initials = "ED" },
+                new() { Name = "Dr. James Wilson", Id = "ID: D-104", Role = "Oral Surgeon", RoleBg = "#ffedd5", RoleColor = "#c2410c", Dept = "Oral Surgery", Phone = "(555) 456-7890", Email = "james.w@auradental.com", Sched = "Tue - Sat", Time = "10:00 AM - 06:00 PM", Initials = "JW" },
+                new() { Name = "Dr. Lisa Anderson", Id = "ID: D-105", Role = "Pediatric Dentist", RoleBg = "#fce7f3", RoleColor = "#be185d", Dept = "Pediatric Dentistry", Phone = "(555) 567-8901", Email = "lisa.a@auradental.com", Sched = "Mon - Fri", Time = "09:00 AM - 05:00 PM", Initials = "LA" },
+                new() { Name = "Anna Smith", Id = "ID: S-201", Role = "Receptionist", RoleBg = "#fef3c7", RoleColor = "#b45309", Dept = "Front Office", Phone = "(555) 111-2222", Email = "anna.s@auradental.com", Sched = "Mon - Fri", Time = "08:30 AM - 05:30 PM", Initials = "AS" },
+                new() { Name = "Mark Thompson", Id = "ID: S-202", Role = "Dental Assistant", RoleBg = "#e0e7ff", RoleColor = "#4338ca", Dept = "Clinical Support", Phone = "(555) 222-3333", Email = "mark.t@auradental.com", Sched = "Mon - Sat", Time = "09:00 AM - 06:00 PM", Initials = "MT" },
+                new() { Name = "Priya Lee", Id = "ID: S-203", Role = "Hygienist", RoleBg = "#fef08a", RoleColor = "#a16207", Dept = "Preventive Care", Phone = "(555) 333-4444", Email = "priya.l@auradental.com", Sched = "Mon - Fri", Time = "09:00 AM - 05:00 PM", Initials = "PL" }
+            });
+            context.SaveChanges();
+        }
+
+        if (!context.Invoices.Any())
+        {
+            context.Invoices.AddRange(new List<Invoice>
+            {
+                new() { Id = "INV-1054", Patient = "Eleanor Vance", Treatment = "Root Canal Treatment", Date = "May 24, 2024", Due = "May 31, 2024", Total = "$2,500", Status = "Unpaid", StatusColor = "#fee2e2", StatusText = "#ef4444", Balance = "$2,500" },
+                new() { Id = "INV-1053", Patient = "Marcus Sterling", Treatment = "Dental Implant", Date = "May 23, 2024", Due = "May 30, 2024", Total = "$4,850", Status = "Partial", StatusColor = "#ffedd5", StatusText = "#c2410c", Balance = "$2,000" },
+                new() { Id = "INV-1052", Patient = "Chloe Park", Treatment = "Teeth Whitening", Date = "May 23, 2024", Due = "May 23, 2024", Total = "$1,500", Status = "Paid", StatusColor = "#dcfce7", StatusText = "#15803d", Balance = "$0" },
+                new() { Id = "INV-1051", Patient = "Samuel Henderson", Treatment = "Braces Adjustment", Date = "May 22, 2024", Due = "May 29, 2024", Total = "$850", Status = "Paid", StatusColor = "#dcfce7", StatusText = "#15803d", Balance = "$0" },
+                new() { Id = "INV-1050", Patient = "Lisa Anderson", Treatment = "Crown Placement", Date = "May 22, 2024", Due = "May 29, 2024", Total = "$2,100", Status = "Paid", StatusColor = "#dcfce7", StatusText = "#15803d", Balance = "$0" }
+            });
+            context.SaveChanges();
+        }
+
+        if (!context.TreatmentCategories.Any())
+        {
+            context.TreatmentCategories.AddRange(new List<TreatmentCategory>
+            {
+                new() { Id = 1, Name = "Preventive Care", Count = 8, Desc = "Regular check-ups, cleanings, and preventive treatments." },
+                new() { Id = 2, Name = "Restorative", Count = 12, Desc = "Fillings, crowns, bridges, and restoration procedures." },
+                new() { Id = 3, Name = "Cosmetic Dentistry", Count = 9, Desc = "Teeth whitening, veneers, bonding, and smile makeovers." },
+                new() { Id = 4, Name = "Orthodontics", Count = 7, Desc = "Braces, aligners, retainers, and teeth alignment." },
+                new() { Id = 5, Name = "Endodontics", Count = 6, Desc = "Root canal therapy and related treatments." },
+                new() { Id = 6, Name = "Oral Surgery", Count = 4, Desc = "Extractions, implants, and surgical procedures." },
+                new() { Id = 7, Name = "Periodontics", Count = 5, Desc = "Gum treatments and periodontal care." },
+                new() { Id = 8, Name = "Prosthodontics", Count = 7, Desc = "Dentures, implants, and prosthesis solutions." },
+                new() { Id = 9, Name = "Emergency Care", Count = 4, Desc = "Urgent dental care and emergency treatments." },
+                new() { Id = 10, Name = "Radiology", Count = 4, Desc = "X-rays, imaging, and diagnostic procedures." },
+                new() { Id = 11, Name = "Radiol/Othersogy", Count = 6, Desc = "Miscellaneous and specialized treatments." }
+            });
+            context.SaveChanges();
+        }
+
+        if (!context.FollowUps.Any())
+        {
+            context.FollowUps.AddRange(new List<FollowUp>
+            {
+                new() { Id = 1, Date = "May 22", Name = "Thomas Parker", Reason = "Braces Check", Doc = "Dr. Aisha Patel", Time = "10:00 AM" },
+                new() { Id = 2, Date = "May 23", Name = "Ava Nguyen", Reason = "Crown Check", Doc = "Dr. Marcus Sterling", Time = "10:00 AM" },
+                new() { Id = 3, Date = "May 24", Name = "Jack Brown", Reason = "Cleaning", Doc = "Dr. Aisha Patel", Time = "10:00 AM" }
+            });
+            context.SaveChanges();
+        }
+
+        if (!context.Transactions.Any())
+        {
+            context.Transactions.AddRange(new List<Transaction>
+            {
+                new() { Id = 1, Type = "Payment Received", Desc = "INV-1053", Amount = "+$1,500", Time = "10:30 AM", Color = "#10b981" },
+                new() { Id = 2, Type = "Payment Received", Desc = "INV-1051", Amount = "+$850", Time = "09:15 AM", Color = "#10b981" },
+                new() { Id = 3, Type = "Invoice Created", Desc = "INV-1054", Amount = "$2,500", Time = "Yesterday", Color = "#3b82f6" },
+                new() { Id = 4, Type = "Refund Issued", Desc = "REF-1042", Amount = "-$500", Time = "May 22", Color = "#ef4444" }
             });
             context.SaveChanges();
         }
