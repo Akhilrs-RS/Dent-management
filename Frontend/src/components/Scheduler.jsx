@@ -155,122 +155,124 @@ export default function Scheduler({ appointments, patients, onAddAppointment, on
       </div>
 
       {/* Grid Schedule */}
-      <div className="scheduler-grid mt-md">
-        
-        {/* Row Header */}
-        <div className="scheduler-time-col-header"></div>
-        {OPERATORIES.map((op, idx) => (
-          <div key={idx} className="scheduler-header-cell" style={{ backgroundColor: 'var(--bg-app)', padding: '20px 14px' }}>
-            <div style={{ fontSize: '15px', color: 'var(--text-primary)', fontWeight: 600 }}>{op.name}</div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 400, marginTop: '4px' }}>
-              {op.dentist}
+      <div className="scheduler-grid-wrapper mt-md">
+        <div className="scheduler-grid">
+          
+          {/* Row Header */}
+          <div className="scheduler-time-col-header"></div>
+          {OPERATORIES.map((op, idx) => (
+            <div key={idx} className="scheduler-header-cell" style={{ backgroundColor: 'var(--bg-app)', padding: '20px 14px' }}>
+              <div style={{ fontSize: '15px', color: 'var(--text-primary)', fontWeight: 600 }}>{op.name}</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 400, marginTop: '4px' }}>
+                {op.dentist}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        {/* Hour Slots */}
-        {TIME_SLOTS.map((slot, sIdx) => (
-          <div key={sIdx} className="scheduler-row">
-            
-            {/* Time label */}
-            <div className="scheduler-time-cell">
-              {slot.label}
-            </div>
+          {/* Hour Slots */}
+          {TIME_SLOTS.map((slot, sIdx) => (
+            <div key={sIdx} className="scheduler-row">
+              
+              {/* Time label */}
+              <div className="scheduler-time-cell">
+                {slot.label}
+              </div>
 
-            {/* Operatorries columns */}
-            {OPERATORIES.map((op, oIdx) => {
-              // Find matching appointment that falls in this hour slot
-              const cellApt = appointments.find(
-                apt => apt.room === op.name && apt.time.startsWith(slot.value)
-              );
+              {/* Operatorries columns */}
+              {OPERATORIES.map((op, oIdx) => {
+                // Find matching appointment that falls in this hour slot
+                const cellApt = appointments.find(
+                  apt => apt.room === op.name && apt.time.startsWith(slot.value)
+                );
 
-              return (
-                <div 
-                  key={oIdx} 
-                  className="scheduler-appointment-cell"
-                >
-                  {cellApt ? (
-                    <div 
-                      className={`appointment-card status-${cellApt.status}`}
-                      onClick={() => {
-                        setSelectedAppointment(cellApt);
-                        setShowEditModal(true);
-                      }}
-                      style={{
-                        backgroundColor: '#F8F9FA',
-                        boxShadow: 'none',
-                        border: 'none',
-                        borderLeft: `3px solid var(--color-${
-                          cellApt.status === 'confirmed' ? 'healthy' : 
-                          cellApt.status === 'completed' ? 'crown' : 
-                          cellApt.status === 'checked-in' ? 'decay' : 
-                          'secondary-blue'
-                        })`,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'flex-start',
-                        padding: '12px',
-                        height: '100%',
-                        borderRadius: '8px'
-                      }}
-                    >
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{cellApt.patientName}</div>
-                        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{cellApt.type}</div>
-                        <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                          {cellApt.time} ({cellApt.duration} mins)
+                return (
+                  <div 
+                    key={oIdx} 
+                    className="scheduler-appointment-cell"
+                  >
+                    {cellApt ? (
+                      <div 
+                        className={`appointment-card status-${cellApt.status}`}
+                        onClick={() => {
+                          setSelectedAppointment(cellApt);
+                          setShowEditModal(true);
+                        }}
+                        style={{
+                          backgroundColor: '#F8F9FA',
+                          boxShadow: 'none',
+                          border: 'none',
+                          borderLeft: `3px solid var(--color-${
+                            cellApt.status === 'confirmed' ? 'healthy' : 
+                            cellApt.status === 'completed' ? 'crown' : 
+                            cellApt.status === 'checked-in' ? 'decay' : 
+                            'secondary-blue'
+                          })`,
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'flex-start',
+                          padding: '12px',
+                          height: '100%',
+                          borderRadius: '8px'
+                        }}
+                      >
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{cellApt.patientName}</div>
+                          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{cellApt.type}</div>
+                          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                            {cellApt.time} ({cellApt.duration} mins)
+                          </div>
+                        </div>
+                        
+                        <div style={{ 
+                          fontSize: '11px', 
+                          fontWeight: 500,
+                          padding: '4px 10px', 
+                          borderRadius: '12px',
+                          backgroundColor: 
+                            cellApt.status === 'confirmed' ? 'rgba(16, 185, 129, 0.1)' : 
+                            cellApt.status === 'completed' ? 'rgba(139, 92, 246, 0.1)' : 
+                            cellApt.status === 'checked-in' ? 'rgba(245, 158, 11, 0.1)' : 
+                            'rgba(59, 130, 246, 0.1)',
+                          color: 
+                            cellApt.status === 'confirmed' ? 'var(--color-healthy)' : 
+                            cellApt.status === 'completed' ? 'var(--color-crown)' : 
+                            cellApt.status === 'checked-in' ? 'var(--color-decay)' : 
+                            'var(--secondary-blue)'
+                        }}>
+                          {cellApt.status === 'checked-in' ? 'Checked In' : cellApt.status.charAt(0).toUpperCase() + cellApt.status.slice(1)}
                         </div>
                       </div>
-                      
-                      <div style={{ 
-                        fontSize: '11px', 
-                        fontWeight: 500,
-                        padding: '4px 10px', 
-                        borderRadius: '12px',
-                        backgroundColor: 
-                          cellApt.status === 'confirmed' ? 'rgba(16, 185, 129, 0.1)' : 
-                          cellApt.status === 'completed' ? 'rgba(139, 92, 246, 0.1)' : 
-                          cellApt.status === 'checked-in' ? 'rgba(245, 158, 11, 0.1)' : 
-                          'rgba(59, 130, 246, 0.1)',
-                        color: 
-                          cellApt.status === 'confirmed' ? 'var(--color-healthy)' : 
-                          cellApt.status === 'completed' ? 'var(--color-crown)' : 
-                          cellApt.status === 'checked-in' ? 'var(--color-decay)' : 
-                          'var(--secondary-blue)'
-                      }}>
-                        {cellApt.status === 'checked-in' ? 'Checked In' : cellApt.status.charAt(0).toUpperCase() + cellApt.status.slice(1)}
-                      </div>
-                    </div>
-                  ) : (
-                    // Clickable empty cell
-                    <button 
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        background: 'transparent',
-                        border: 'none',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'transparent'
-                      }}
-                      className="empty-slot-btn"
-                      onClick={() => openAddModal(slot.value, op.name)}
-                      title="Click to book this slot"
-                    >
-                      <span style={{ fontSize: '18px', color: 'var(--border-color)' }}>+</span>
-                    </button>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        ))}
+                    ) : (
+                      // Clickable empty cell
+                      <button 
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'transparent'
+                        }}
+                        className="empty-slot-btn"
+                        onClick={() => openAddModal(slot.value, op.name)}
+                        title="Click to book this slot"
+                      >
+                        <span style={{ fontSize: '18px', color: 'var(--border-color)' }}>+</span>
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Bottom Layout (Upcoming & Quick Actions) */}

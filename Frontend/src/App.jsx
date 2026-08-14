@@ -427,6 +427,22 @@ export default function App() {
   return (
     <div className="app-container">
       
+      {/* Mobile Header */}
+      <header className="mobile-header">
+        <div className="logo-container-mobile">
+          <div className="logo-icon" style={{ backgroundColor: 'var(--primary-teal)', borderColor: 'transparent' }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2c-4 0-5 3-5 5v5c0 4-2 6-4 6 2 2 4 4 9 4s7-2 9-4c-2 0-4-2-4-6V7c0-2-1-5-5-5z"/></svg>
+          </div>
+          <div className="logo-text" style={{ color: 'var(--text-primary)' }}>AuraDental</div>
+        </div>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <button className="mobile-header-btn" onClick={() => setThemeMode(themeMode === 'dark' ? 'light' : 'dark')}>
+            {themeMode === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <div className="mobile-avatar">ES</div>
+        </div>
+      </header>
+
       {/* Sidebar Navigation */}
       <aside className="sidebar">
         <div className="logo-container">
